@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioco WebApp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Benvenuto nel Gioco!</h1>
+    <div>
+        <h2>Inizia una nuova partita</h2>
+        <button id="start-game">Inizia Gioco</button>
+        <p id="new-game-message"></p>
+    </div>
+    <div>
+        <h2>Unisciti a una partita esistente</h2>
+        <input type="text" id="session-code" placeholder="Inserisci il codice di sessione">
+        <button id="join-game">Unisciti</button>
+        <p id="join-game-message"></p>
+    </div>
+
+    <script>
+        document.getElementById('start-game').addEventListener('click', async () => {
+            const response = await fetch('/api/start-game', { method: 'POST' });
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('new-game-message').innerText = `Partita iniziata! Codice: ${data.sessionCode}. Vai a: ${data.gameUrl}`;
+            } else {
+                document.getElementById('new-game-message').innerText = data.error;
+            }
+        });
+
+        document.getElementById('join-game').addEventListener('click', async () => {
+            const sessionCode = document.getElementById('session-code').value;
+            const response = await fetch('/api/join-game', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sessionCode }) });
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('join-game-message').innerText = `Sei entrato nella partita! Vai a: ${data.gameUrl}`;
+            } else {
+                document.getElementById('join-game-message').innerText = data.error;
+            }
+        });
+    </script>
