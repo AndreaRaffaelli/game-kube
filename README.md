@@ -1,4 +1,4 @@
 # game-kube
-This wants to become an infrastructure to host multiplayer games based on WebSocket / Socket.io. This project aim to manage several gaming sessions in a scalable way, managing the creation of instances of the games via containers.
+The project aims to manage multiple gaming sessions in a scalable manner by overseeing the creation of game instances through containers.
 
-Please read more about on [WhatsGoingOn.md](./WhatsGoingOn.mg), which is a documentation/stream of thoughts about the design choiches of the projects. I apologize about the fact it is written in italian, I don't doubt you will not find any problems transalting it on your own.
+For more information, please refer to WhatsGoingOn.md, which contains documentation and a stream of thoughts regarding the design choices of the project. I apologize for the fact that it is written in Italian, but I am confident you will have no trouble translating it on your own.
