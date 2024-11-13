@@ -507,26 +507,14 @@ I client web (javascript) possono inviare una richiesta al server frontend per s
 
 Il game-server può inviare una richiesta al server frontend per segnalare la fine della partita. Il server frontend può quindi inviare una richiesta al server backend per terminare i container di gioco associati. Questo approccio richiede modifiche al codice del game-server, nonche' una consapevolezza del ciclo di vita del gioco e della terminazione della partita.
 
-### 3. Terminazione da load balancer
+### 3. Terminazione da orchestratore
 
 Il load balancer può monitorare le connessioni attive e terminare i container di gioco associati quando le connessioni attive raggiungono 0. Questo approccio richiede la configurazione del load balancer per monitorare le connessioni attive e inviare richieste al controller Kubernetes per terminare i container di gioco. Questo approccio richiede modifiche all'infrastruttura di hosting, ma non richiede modifiche al codice del client web o del game-server. Alto costo di configurazione, ma basso impatto sul codice esistente.
 
 ### Soluzione proposta
 
 Dato che le soluzioni di load balancing, Ingress & co, non permettono un controllo fine-grained sulle connessioni, introduciamo un custom controller che monitora le connessioni attive e termina i container di gioco associati quando le connessioni attive raggiungono 0. Sara' necessario attivare le metriche di monitoraggio delle connessioni attive e configurare il controller per monitorare le connessioni attive e terminare i container di gioco associati.
-
-NGINX Ingress Controller può esportare metriche in formato Prometheus:
-
-```yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: example-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/enable-access-log: "true"
-spec:
-  ...
-```
+Affinche' Il controller possa monitorare le connessioni attive, e' necessario che ogni pod sia equipaggiato con un sidecar proxy che fornisca le metriche di monitoraggio delle connessioni attive. 
 
 ## Nuova architettura: Ingress
 ```plaintext
